@@ -1,0 +1,19 @@
+{
+  "name": "react-directory",
+  "homepage": "https://github.com/ccoenraets/directory-react-nodejs",
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "www/lib/js/",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "react": "0.13.3"
+  }
+}
