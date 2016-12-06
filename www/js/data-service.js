@@ -10,11 +10,15 @@ employeeService = (function () {
                 return response.json();
               });
         },
+
         findByName: function(searchKey) {
           var url = new URL('/employees', new URL(baseURL)),
             params = { name: searchKey };
 
-          Object.keys(params).forEach(function(key) { url.searchParams.append(key, params[key]); });
+          Object.keys(params).forEach(function(key) {
+            url.searchParams.append(key, params[key]);
+          });
+
           return fetch(url)
             .then(function(response) {
               return response.json();
