@@ -71,7 +71,7 @@ var EmployeePage = React.createClass({
         return {employee: {}};
     },
     componentDidMount: function() {
-        this.props.service.findById(this.props.employeeId).done(function(result) {
+        this.props.service.findById(this.props.employeeId).then(function(result) {
             this.setState({employee: result});
         }.bind(this));
     },
@@ -138,7 +138,7 @@ var App = React.createClass({
         }
     },
     searchHandler: function(searchKey) {
-        employeeService.findByName(searchKey).done(function(employees) {
+        employeeService.findByName(searchKey).then(function(employees) {
             this.setState({
                 searchKey:searchKey,
                 employees: employees,
