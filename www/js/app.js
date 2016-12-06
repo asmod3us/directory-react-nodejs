@@ -53,6 +53,10 @@ var EmployeeList = React.createClass({
 });
 
 var HomePage = React.createClass({
+    componentDidMount: function() {
+        console.log('HomePage mounted');
+    },
+
     render: function () {
         return (
             <div className={"page " + this.props.position}>
@@ -71,6 +75,8 @@ var EmployeePage = React.createClass({
         return {employee: {}};
     },
     componentDidMount: function() {
+        console.log('EmployeePage mounted')
+
         this.props.service.findById(this.props.employeeId).then(function(result) {
             this.setState({employee: result});
         }.bind(this));
