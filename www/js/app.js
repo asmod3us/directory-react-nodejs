@@ -163,16 +163,22 @@ var App = React.createClass({
 });
 
 function bootstrap() {
-  if (window.cordova) {
-    console.log("Running in Cordova, will bootstrap React once 'deviceready' event fires.");
-    document.addEventListener('deviceready', function () {
-      console.log("'deviceready' event has fired, bootstrapping React.");
-      React.render(<App/>, document.body);
-    }, false);
-  } else {
-    console.log("Running in browser, bootstrapping React now.");
-    React.render(<App/>, document.body);
-  }
+    if (window.cordova) {
+        console.log("Running in Cordova, will bootstrap React once 'deviceready' event fires.");
+        document.addEventListener('deviceready', function () {
+            console.log("'deviceready' event has fired, bootstrapping React.");
+            React.render(<App/>, document.body);
+        }, false);
+    } else {
+        console.log("Running in browser, bootstrapping React now.");
+        // simple mock for browser environment
+        window.cordova = {
+            exec: function(success, error, plugin, method, args) {
+                success();
+            }
+        };
+        React.render(<App/>, document.body);
+    }
 }
 
 bootstrap();
