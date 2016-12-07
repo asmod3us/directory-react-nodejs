@@ -7,24 +7,11 @@ employeeService = (function () {
     // The public API
     return {
         findById: function(id) {
-            return fetch(baseURL + "/employees/" + id)
-              .then(function(response) {
-                return response.json();
-              });
+            return $.ajax({ url: baseURL + "/employees/" + id }).then(function (result) { return { data: result }});
         },
 
         findByName: function(searchKey) {
-          var url = new URL('/employees', new URL(baseURL)),
-            params = { name: searchKey };
-
-          Object.keys(params).forEach(function(key) {
-            url.searchParams.append(key, params[key]);
-          });
-
-          return fetch(url)
-            .then(function(response) {
-              return response.json();
-            });
+            return $.ajax({url: baseURL + "/employees", data: {name: searchKey}}).then(function (result) { return { data: result }});
         }
     };
 
