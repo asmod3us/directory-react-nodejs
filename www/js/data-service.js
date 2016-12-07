@@ -1,5 +1,7 @@
 employeeService = (function () {
 
+    'use strict';
+
     var baseURL = "http://localhost:5000";
 
     // The public API

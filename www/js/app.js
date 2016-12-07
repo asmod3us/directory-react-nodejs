@@ -54,7 +54,7 @@ var EmployeeList = React.createClass({
 
 var HomePage = React.createClass({
     componentDidMount: function() {
-        console.log('HomePage mounted');
+        console.debug('HomePage mounted');
     },
 
     render: function () {
@@ -75,11 +75,11 @@ var EmployeePage = React.createClass({
         return {employee: {}};
     },
     componentDidMount: function() {
-        console.log('EmployeePage mounted')
+        console.debug('EmployeePage mounted')
 
         this.props.service.findById(this.props.employeeId).then(function(result) {
-            this.setState({employee: result});
-        }.bind(this));
+            this.setState({employee: result.data});
+        }.bind(this)).done();
     },
     render: function () {
         return (
@@ -144,12 +144,13 @@ var App = React.createClass({
         }
     },
     searchHandler: function(searchKey) {
-        employeeService.findByName(searchKey).then(function(employees) {
+        employeeService.findByName(searchKey).then(function(result) {
             this.setState({
                 searchKey:searchKey,
-                employees: employees,
-                pages: [<HomePage key="list" searchHandler={this.searchHandler} searchKey={searchKey} employees={employees}/>]});
-        }.bind(this));
+                employees: result.data,
+                pages: [<HomePage key="list" searchHandler={this.searchHandler} searchKey={searchKey} employees={result.data}/>]});
+        }.bind(this))
+        .done();
     },
     componentDidMount: function() {
         router.addRoute('', function() {
@@ -164,13 +165,13 @@ var App = React.createClass({
 
 function bootstrap() {
     if (window.cordova) {
-        console.log("Running in Cordova, will bootstrap React once 'deviceready' event fires.");
+        console.debug("Running in Cordova, will bootstrap React once 'deviceready' event fires.");
         document.addEventListener('deviceready', function () {
-            console.log("'deviceready' event has fired, bootstrapping React.");
+            console.debug("'deviceready' event has fired, bootstrapping React.");
             React.render(<App/>, document.body);
         }, false);
     } else {
-        console.log("Running in browser, bootstrapping React now.");
+        console.debug("Running in browser, bootstrapping React now.");
         // simple mock for browser environment
         window.cordova = {
             exec: function(success, error, plugin, method, args) {
