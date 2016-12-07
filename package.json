@@ -3,6 +3,7 @@
   "description": "React Node.js sample app",
   "version": "0.0.1",
   "dependencies": {
+    "appdynamics": "^4.2.9",
     "express": "^4.10.6"
   },
   "devDependencies": {

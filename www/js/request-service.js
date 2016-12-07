@@ -16,6 +16,18 @@ requestService = (function() {
         }
     }
 
+    function _headersAsMap(response) {
+        var headers = {};
+        response.xhr.getAllResponseHeaders().split('\u000d\u000a').forEach(function(line) {
+            var kv = line.split(': ', 2);
+            if (2 === kv.length) {
+              headers[kv[0]] = kv[1];
+            }
+        });
+
+        return headers;
+    }
+
     function _beginRequest(config) {
         console.debug('_beginRequest: ', JSON.stringify(config));
         return pluginService.exec('AppDynamics', 'beginHttpRequest', [ config.url ]);
@@ -28,11 +40,12 @@ requestService = (function() {
             return Q(response);
         } else {
             requestKeyCache.remove(response.config);
-            console.debug('_endRequest: ', appdRequestKey, response.xhr.status, response.xhr.getAllResponseHeaders());
+            console.debug('_endRequest: ', appdRequestKey, response.xhr.status, _headersAsMap(response));
 
-           //TODO why is this promise not returning?
-            pluginService.exec('AppDynamics', 'reportDone', [ appdRequestKey, response.xhr.status, response.xhr.getAllResponseHeaders()]);
-            return response;
+            return pluginService.exec('AppDynamics', 'reportDone', [ appdRequestKey, response.xhr.status, _headersAsMap(response)])
+              .then(function() {
+                  return response;
+              })
         }
     }
 
@@ -103,9 +116,6 @@ requestService = (function() {
                           return _endRequest(response);
                         });
                   }
-              })
-              .fail(function() {
-                return ajax(config);
               });
         }
     }
